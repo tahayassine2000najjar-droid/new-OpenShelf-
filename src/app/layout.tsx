@@ -1,8 +1,7 @@
-import Link from "next/link";
-import "./global.css";
+
 import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata : Metadata = {
   title: "OpenShelf",
   description: "Catalog of books of the online library",
 };
@@ -23,8 +22,8 @@ export default function RootLayout({
               OpenShelf
             </h1>
             <nav>
-              <link href="/" >About</link>
-              <link href="/books/create" >Add a Book</link>
+              <a href="/">About</a>
+              <a href="/books/create">Add a Book</a>
             </nav>
           </header>
           <main>{children}</main>
