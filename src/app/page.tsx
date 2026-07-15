@@ -1,7 +1,7 @@
-" use client "
-import {useState , useEffect , useCallback} from "react"
+"use client"
+import {useState ,useEffect,useCallback} from "react"
 import Link from "next/link"
-import type {IBook ,ToastState} from "@types"
+import type {IBook ,ToastState} from "../types/index"
 
 export default function Home (){
   const [books , setBooks]=useState<IBook[]>([])
@@ -50,7 +50,7 @@ setPendingDeleteId(id);
 showToast("are u sure about deleting this ?", "confirm");
 }
 const handleConfirmDelete = async ()=>{
-  const id = pendingDeleteId ; 
+  const id = pendingDeletedId ; 
   setPendingDeleteId(null)
   setToast({show : false , message :"" , type : ""})
   try{
