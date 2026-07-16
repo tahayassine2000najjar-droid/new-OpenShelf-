@@ -79,7 +79,7 @@ export async function PUT(
       );
     }
     return Response.json(
-      { error: "Error mise a jour book!" },
+      { error: "Error updating book!" },
       { status: 500 }
     );
   }

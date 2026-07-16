@@ -30,7 +30,7 @@ export default function EditBook() {
       try {
         const res = await fetch(`/api/books/${params.id}`);
         if (!res.ok) {
-          setServerError("Livre introuvable");
+          setServerError("Book not found");
           setLoading(false);
           return;
         }
@@ -89,22 +89,22 @@ export default function EditBook() {
         if (result.errors) {
           setErrors(result.errors);
         } else {
-          setServerError(result.error || "an Error has occurred!");
+          setServerError(result.error || "An error occurred!");
         }
         return;
       }
 
-      setToast({ show: true, message: "the book has been modified successfuly !", type: "success" });
+      setToast({ show: true, message: "Book updated successfully!", type: "success" });
       setTimeout(() => router.push(`/books/${params.id}`), 2000);
     } catch {
-      setServerError("Erreur de connexion au serveur");
+      setServerError("Server connection error");
     }
   };
 
   if (loading) {
     return (
       <div className="container">
-        <h2>Chargement...</h2>
+        <h2>Loading...</h2>
       </div>
     );
   }
@@ -117,7 +117,7 @@ export default function EditBook() {
         </div>
       )}
 
-      <h2>Modify the book </h2>
+      <h2>Edit Book</h2>
       {serverError && <div className="error-message">{serverError}</div>}
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -167,7 +167,7 @@ export default function EditBook() {
         </div>
 
         <div className="form-group">
-          <label>Publication Year*</label>
+          <label>Publication Year *</label>
           <input
             type="number"
             name="publicationYear"
@@ -200,12 +200,12 @@ export default function EditBook() {
               checked={formData.available}
               onChange={handleChange}
             />
-            Disponible
+            Available
           </label>
         </div>
 
         <button type="submit" className="submit-btn">
-          save modifications
+          Save Changes
         </button>
       </form>
     </div>

@@ -55,18 +55,18 @@ export default function CreateBook() {
         if (result.errors) {
           setErrors(result.errors);
         } else {
-          setServerError(result.error || "Une erreur est survenue");
+          setServerError(result.error || "An error occurred");
         }
         return;
       }
       setToast({
         show: true,
-        message: "Le livre a été ajouté avec succès !",
+        message: "Book added successfully!",
         type: "success",
       });
       setTimeout(() => router.push("/"), 2000);
     } catch {
-      setServerError("Erreur de connexion au serveur !");
+      setServerError("Server connection failed!");
     }
   };
 
@@ -78,11 +78,11 @@ export default function CreateBook() {
         </div>
       )}
 
-      <h2>Ajouter un livre</h2>
+      <h2>Add a Book</h2>
       {serverError && <div className="error-message">{serverError}</div>}
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Titre *</label>
+          <label>Title *</label>
           <input
             type="text"
             name="title"
@@ -93,7 +93,7 @@ export default function CreateBook() {
         </div>
 
         <div className="form-group">
-          <label>Auteur *</label>
+          <label>Author *</label>
           <input
             type="text"
             name="author"
@@ -115,7 +115,7 @@ export default function CreateBook() {
         </div>
 
         <div className="form-group">
-          <label>Catégorie *</label>
+          <label>Category *</label>
           <input
             type="text"
             name="category"
@@ -128,7 +128,7 @@ export default function CreateBook() {
         </div>
 
         <div className="form-group">
-          <label>Année de publication *</label>
+          <label>Publication Year *</label>
           <input
             type="number"
             name="publicationYear"
@@ -161,12 +161,12 @@ export default function CreateBook() {
               checked={formData.available}
               onChange={handleChange}
             />
-            Disponible
+            Available
           </label>
         </div>
 
         <button type="submit" className="submit-btn">
-          Ajouter le livre
+          Add Book
         </button>
       </form>
     </div>

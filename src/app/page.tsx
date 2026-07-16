@@ -48,7 +48,7 @@ export default function Home() {
 
   const handleDeleteClick = (id: string) => {
     setPendingDeleteId(id);
-    showToast("Êtes-vous sûr de vouloir supprimer ce livre ?", "confirm");
+    showToast("Are you sure you want to delete this book?", "confirm");
   };
 
   const handleConfirmDelete = async () => {
@@ -59,12 +59,12 @@ export default function Home() {
       const res = await fetch(`/api/books/${id}`, { method: "DELETE" });
       if (res.ok) {
         setBooks(books.filter((book) => book._id !== id));
-        showToast("Le livre a été supprimé avec succès", "success");
+        showToast("Book deleted successfully", "success");
       } else {
-        showToast("Erreur lors de la suppression du livre", "error");
+        showToast("Error deleting the book", "error");
       }
     } catch {
-      showToast("Erreur de connexion", "error");
+      showToast("Connection error", "error");
     }
   };
 
@@ -86,7 +86,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="container">
-        <h2>Chargement...</h2>
+        <h2>Loading...</h2>
       </div>
     );
   }
@@ -102,70 +102,78 @@ export default function Home() {
                 className="toast-btn toast-confirm"
                 onClick={handleConfirmDelete}
               >
-                Confirmer
+                Confirm
               </button>
               <button
                 className="toast-btn toast-cancel"
                 onClick={handleCancelDelete}
               >
-                Annuler
+                Cancel
               </button>
             </div>
           )}
         </div>
       )}
 
-      <h2>Catalogue des Livres</h2>
+      <h2>Book Catalog</h2>
       <p className="subtitle">
-        Découvrez notre collection de livres disponibles à l&apos;emprunt
+        Browse our collection of books available for borrowing
       </p>
 
       <div className="top-bar">
-        <input
-          type="text"
-          placeholder="Rechercher par titre ou auteur..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">Tous</option>
-          <option value="available">Disponible</option>
-          <option value="borrowed">Emprunté</option>
-        </select>
+        <div className="search-wrapper">
+          <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search by title or author..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="filter-wrapper">
+          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+            <option value="all">All</option>
+            <option value="available">Available</option>
+            <option value="borrowed">Borrowed</option>
+          </select>
+        </div>
       </div>
 
       {filteredBooks.length === 0 ? (
-        <p className="no-results">Aucun livre trouvé</p>
+        <p className="no-results">No books found</p>
       ) : (
         <div className="books">
           {filteredBooks.map((book) => (
-            <div className="card" key={book._id}>
-              <h3>{book.title}</h3>
-              <p>
-                <strong>Auteur :</strong> {book.author}
-              </p>
-              <p>
-                <strong>Catégorie :</strong> {book.category}
-              </p>
-              <p>
-                <strong>Année :</strong> {book.publicationYear}
-              </p>
-              <span className={book.available ? "available" : "borrowed"}>
-                {book.available ? "Disponible" : "Emprunté"}
-              </span>
-              <div className="actions">
-                <Link href={`/books/${book._id}`}>
-                  <button>Voir détails</button>
-                </Link>
-                <Link href={`/books/edit/${book._id}`}>
-                  <button className="edit">Modifier</button>
-                </Link>
-                <button
-                  className="delete"
-                  onClick={() => handleDeleteClick(book._id)}
-                >
-                  Supprimer
-                </button>
+            <div className="book" key={book._id}>
+              <div className="book-spine"></div>
+              <div className="book-pages"></div>
+              <div className="book-cover">
+                <div className="book-cover-inner">
+                  <span className="book-category">{book.category}</span>
+                  <h3 className="book-title">{book.title}</h3>
+                  <p className="book-author">by {book.author}</p>
+                  <div className="book-year">{book.publicationYear}</div>
+                  <span className={book.available ? "book-status available" : "book-status borrowed"}>
+                    {book.available ? "Available" : "Borrowed"}
+                  </span>
+                </div>
+                <div className="book-actions">
+                  <Link href={`/books/${book._id}`}>
+                    <button>View Details</button>
+                  </Link>
+                  <Link href={`/books/edit/${book._id}`}>
+                    <button className="edit">Edit</button>
+                  </Link>
+                  <button
+                    className="delete"
+                    onClick={() => handleDeleteClick(book._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}

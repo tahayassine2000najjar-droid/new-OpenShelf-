@@ -17,10 +17,10 @@ export default function RootLayout({
       <body>
         <div className="overlay">
           <header>
-            <h1>OpenShelf</h1>
+            <Link href="/"><h1>OpenShelf</h1></Link>
             <nav>
-              <Link href="/">Accueil</Link>
-              <Link href="/books/create">Ajouter un livre</Link>
+              <Link href="/">Home</Link>
+              <Link href="/books/create">Add a Book</Link>
             </nav>
           </header>
           <main>{children}</main>

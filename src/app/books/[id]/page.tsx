@@ -16,7 +16,7 @@ export default function BookDetail() {
       try {
         const res = await fetch(`/api/books/${params.id}`);
         if (!res.ok) {
-          setError("book not found! ");
+          setError("Book not found!");
           return;
         }
         const data = await res.json();
@@ -34,7 +34,7 @@ export default function BookDetail() {
   if (loading) {
     return (
       <div className="container">
-        <h2>Chargement...</h2>
+        <h2>Loading...</h2>
       </div>
     );
   }
@@ -42,10 +42,10 @@ export default function BookDetail() {
   if (error) {
     return (
       <div className="container">
-        <h2>Erreur</h2>
+        <h2>Error</h2>
         <p className="error-message">{error}</p>
         <Link href="/">
-          <button>Retour &agrave; l&apos;about</button>
+          <button>Back to Home</button>
         </Link>
       </div>
     );
@@ -62,29 +62,29 @@ export default function BookDetail() {
           <strong>Author:</strong> {book.author}
         </p>
         <p>
-          <strong>ISBN :</strong> {book.isbn}
+          <strong>ISBN:</strong> {book.isbn}
         </p>
         <p>
-          <strong>Category :</strong> {book.category}
+          <strong>Category:</strong> {book.category}
         </p>
         <p>
-          <strong>year of publication:</strong> {book.publicationYear}
+          <strong>Publication Year:</strong> {book.publicationYear}
         </p>
         <p>
-          <strong>Description :</strong> {book.description}
+          <strong>Description:</strong> {book.description}
         </p>
         <p>
-          <strong>Statut :</strong>{" "}
+          <strong>Status:</strong>{" "}
           <span className={book.available ? "available" : "borrowed"}>
-            {book.available ? "Disponible" : "Emprunté"}
+            {book.available ? "Available" : "Borrowed"}
           </span>
         </p>
         <div className="actions">
           <Link href={`/books/edit/${book._id}`}>
-            <button className="edit">Modify</button>
+            <button className="edit">Edit</button>
           </Link>
           <Link href="/">
-            <button>Return</button>
+            <button>Back</button>
           </Link>
         </div>
       </div>
