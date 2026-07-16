@@ -1,26 +1,26 @@
-"use client"
-import {useState} from "react"
-import {useRouter} from "next/navigation"
-import type {BookFormData, ValidationError , ToastState} from "../../../types/index.ts"
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { BookFormData, ValidationError, ToastState } from "@/types";
 
-export default function CreateBook(){
-    const router = useRouter()
-    const [errors , setErrors]=useState<ValidationError>({})
-    const [serverError , setServerError]=useState("") 
-    const [toast , setToast]=useState<ToastState>({
-        show: false,
-        message: "",
-        type: "",
-    })
-    const [formData , setFormData]=useState<BookFormData>({
-        title : "",
-        author : "",
-        isbn :"",
-        category : "",
-        publicationYear : "",
-        description : "",
-        available :true,
-    })
+export default function CreateBook() {
+  const router = useRouter();
+  const [errors, setErrors] = useState<ValidationError>({});
+  const [serverError, setServerError] = useState("");
+  const [toast, setToast] = useState<ToastState>({
+    show: false,
+    message: "",
+    type: "",
+  });
+  const [formData, setFormData] = useState<BookFormData>({
+    title: "",
+    author: "",
+    isbn: "",
+    category: "",
+    publicationYear: "",
+    description: "",
+    available: true,
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -41,31 +41,36 @@ export default function CreateBook(){
 
     const data = {
       ...formData,
-      publicationYear: parseInt(formData.publicationYear, 10),
+      publicationYear: parseInt(String(formData.publicationYear), 10),
     };
-        try{
-         const res = await fetch("/api/books",{
-            method : "POST",
-            headers: { "Content-Type": "application/json" },
-            body : JSON.stringify(data)
 
-         })
-          const result = await res.json()
-         if(!res.ok){
-            if(result.errors){
-                setErrors(result.errors)
-            }else{
-                setServerError(result.error || "an Error has occurred")
-         }
-         return;
-
+    try {
+      const res = await fetch("/api/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        if (result.errors) {
+          setErrors(result.errors);
+        } else {
+          setServerError(result.error || "Une erreur est survenue");
         }
-        setToast({show : true , message : "the book has been added successfuly!" , type :"success"})
-        setTimeout(()=>router.push("/"),2000)
-     }catch{
-        setServerError("connection server has failed !")
-     }
-      return (
+        return;
+      }
+      setToast({
+        show: true,
+        message: "Le livre a été ajouté avec succès !",
+        type: "success",
+      });
+      setTimeout(() => router.push("/"), 2000);
+    } catch {
+      setServerError("Erreur de connexion au serveur !");
+    }
+  };
+
+  return (
     <div className="container">
       {toast.show && (
         <div className={`toast toast-${toast.type}`}>
@@ -166,5 +171,4 @@ export default function CreateBook(){
       </form>
     </div>
   );
-}
 }

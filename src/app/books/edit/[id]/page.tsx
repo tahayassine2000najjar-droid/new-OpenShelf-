@@ -73,7 +73,7 @@ export default function EditBook() {
 
     const data = {
       ...formData,
-      publicationYear: parseInt(formData.publicationYear, 10),
+      publicationYear: parseInt(String(formData.publicationYear), 10),
     };
 
     try {

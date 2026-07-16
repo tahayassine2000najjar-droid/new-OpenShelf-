@@ -17,7 +17,7 @@ export interface BookFormData {
     author :string ,
     isbn :string ,
     category :string , 
-    publicationYear :number , 
+    publicationYear :number | string , 
     description :string ,
     available :boolean    
 }

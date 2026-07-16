@@ -1,91 +1,97 @@
-"use client"
-import {useState ,useEffect,useCallback} from "react"
-import Link from "next/link"
-import type {IBook ,ToastState} from "../types/index"
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import type { IBook, ToastState } from "@/types";
 
-export default function Home (){
-  const [books , setBooks]=useState<IBook[]>([])
-  const [loading ,setLoading ]=useState(true)
-  const [search ,setSearch ]=useState("")
-  const [ filter,setFilter ]=useState("All")
-  const [ toast,setToast ]=useState<ToastState>({
-      show :false,
-      message: "" ,
-      type : ""
-     })
+export default function Home() {
+  const [books, setBooks] = useState<IBook[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [toast, setToast] = useState<ToastState>({
+    show: false,
+    message: "",
+    type: "",
+  });
 
-  const[pendingDeletedId , setPendingDeleteId]=useState<string|null>("null");
-  const showToast =useCallback((message : string ,type :ToastState["type"])=>{
-     setToast({show : true , message , type})
-     if(type !=="confirm"){
-      setTimeout(()=>setToast({show : false , message : "", type : ""}),3000)
-     }
+  const [pendingDeletedId, setPendingDeleteId] = useState<string | null>(null);
 
-  },[])
-  useEffect (()=>{
-    let cancelled = false ;
-    async function loadBook(){
+  const showToast = useCallback((message: string, type: ToastState["type"]) => {
+    setToast({ show: true, message, type });
+    if (type !== "confirm") {
+      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadBooks() {
       try {
-        const res = await fetch("/api/books")
-        const data = await res.json()
-       if(!cancelled){
-        setBooks(data)
-       }
-      }catch{
-        console.error("Error Loading Books")
-      }finally{
-        if(!cancelled){
-          setLoading(false)
+        const res = await fetch("/api/books");
+        const data = await res.json();
+        if (!cancelled) {
+          setBooks(data);
+        }
+      } catch {
+        console.error("Error Loading Books");
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
         }
       }
     }
-    loadBook()
-    return ()=>
-      cancelled = true ; 
-  }, [])
+    loadBooks();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
+  const handleDeleteClick = (id: string) => {
+    setPendingDeleteId(id);
+    showToast("Êtes-vous sûr de vouloir supprimer ce livre ?", "confirm");
+  };
 
-  const handleDeleteClick =(id : string)=>{
-setPendingDeleteId(id);
-showToast("are u sure about deleting this ?", "confirm");
-}
-const handleConfirmDelete = async ()=>{
-  const id = pendingDeletedId ; 
-  setPendingDeleteId(null)
-  setToast({show : false , message :"" , type : ""})
-  try{
-    const res = await fetch(`/api/books/${id}` , {method : "Delete"})
-    if(res.ok){
-      setBooks(books.filter((book)=>book._id !==id))
-      showToast("the book is deleted Successfully" , "success")
-    }else{
-      showToast(" Error while deleting the book" , "error")
+  const handleConfirmDelete = async () => {
+    const id = pendingDeletedId;
+    setPendingDeleteId(null);
+    setToast({ show: false, message: "", type: "" });
+    try {
+      const res = await fetch(`/api/books/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setBooks(books.filter((book) => book._id !== id));
+        showToast("Le livre a été supprimé avec succès", "success");
+      } else {
+        showToast("Erreur lors de la suppression du livre", "error");
+      }
+    } catch {
+      showToast("Erreur de connexion", "error");
     }
-  }catch{
-      showToast("connexion error" , "error")
-    }
-  }
-  const handleCancelDelete = ()=>{
-    setPendingDeleteId(null)
-    setToast({show : false , message : "" , type : ""})
-  } 
-  const filteredBooks = books.filter((book)=>{
+  };
+
+  const handleCancelDelete = () => {
+    setPendingDeleteId(null);
+    setToast({ show: false, message: "", type: "" });
+  };
+
+  const filteredBooks = books.filter((book) => {
     const matchesSearch =
-    book.title.toLowerCase().includes(search.toLowerCase()) ||
-    book.author.toLowerCase().includes(search.toLowerCase());
+      book.title.toLowerCase().includes(search.toLowerCase()) ||
+      book.author.toLowerCase().includes(search.toLowerCase());
 
-  if(filter === "available") return matchesSearch && book.available ;
-  if(filter === "borrowed") return matchesSearch && !book.available ;
-  return matchesSearch ; 
-    })
-    if (loading){
-      return (
-        <div className="container">
-          <h2>changement ...</h2>
-        </div>
-      )
-    }
+    if (filter === "available") return matchesSearch && book.available;
+    if (filter === "borrowed") return matchesSearch && !book.available;
+    return matchesSearch;
+  });
+
+  if (loading) {
     return (
+      <div className="container">
+        <h2>Chargement...</h2>
+      </div>
+    );
+  }
+
+  return (
     <div className="container">
       {toast.show && (
         <div className={`toast toast-${toast.type}`}>
@@ -144,9 +150,7 @@ const handleConfirmDelete = async ()=>{
               <p>
                 <strong>Année :</strong> {book.publicationYear}
               </p>
-              <span
-                className={book.available ? "available" : "borrowed"}
-              >
+              <span className={book.available ? "available" : "borrowed"}>
                 {book.available ? "Disponible" : "Emprunté"}
               </span>
               <div className="actions">
