@@ -22,32 +22,31 @@ export default function CreateBook(){
         available :true,
     })
 
-    const handleChange =(
-        e: react.changeEvent<HTMLInputElement | HTMLTextAreaElement>)
-        =>{
-            const [name , value , type]=e.target;
-            const checked = 
-            e.target instanceof HTMLInputElement ? e.target.checked : false;
-            setFormData({
-                ...formData,
-                [name] : type === "checkbox" ? checked : value ;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const checked =
+      e.target instanceof HTMLInputElement ? e.target.checked : false;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
 
-            })
-        };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrors({});
+    setServerError("");
 
-        const handleSubmit = async (e : React.FormEvent<HtmlFormElement>)=>{
-            e.preventDefault()
-            setErrors({})
-            setServerError("")
-
-            const data ={
-                ...formData ,
-            publicationYear : parseInt(formData.publicationYear , 10)
-        };
+    const data = {
+      ...formData,
+      publicationYear: parseInt(formData.publicationYear, 10),
+    };
         try{
          const res = await fetch("/api/books",{
             method : "POST",
-            headers : {"Content-Type : application/json"},
+            headers: { "Content-Type": "application/json" },
             body : JSON.stringify(data)
 
          })
