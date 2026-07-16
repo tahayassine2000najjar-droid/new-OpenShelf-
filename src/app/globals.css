@@ -35,7 +35,7 @@ header h1 {
 
 nav {
   display: flex;
-  gap: 50px;
+  gap: 15px;
 }
 
 nav a {
@@ -95,28 +95,25 @@ nav a:hover {
 /* Cards */
 
 .books {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
-  justify-content: center;
 }
 
 .card {
-  background: linear-gradient(145deg, #fdf6e3, #f5e6c8);
-  border-radius: 4px 15px 15px 4px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
   padding: 25px;
   transition: 0.3s;
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3), inset -3px 0 8px rgba(0, 0, 0, 0.05);
-  border-left: 5px solid #8b4513;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-  transform: translateY(-6px) rotate(-1deg);
-  box-shadow: 6px 8px 20px rgba(0, 0, 0, 0.4), inset -3px 0 8px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px);
 }
 
 .card h3 {
-  color: #5c3317;
+  color: #1e3a8a;
   margin-bottom: 12px;
   font-size: 20px;
 }
@@ -163,15 +160,15 @@ button:hover {
 }
 
 button:first-child {
-  background: #2d6a4f;
+  background: #2563eb;
 }
 
 .edit {
-  background: #e76f51 !important;
+  background: #f59e0b !important;
 }
 
 .delete {
-  background: #9b2226 !important;
+  background: #dc2626 !important;
 }
 
 /* Footer */
@@ -321,19 +318,16 @@ footer {
 }
 
 .toast-confirm {
-  background: linear-gradient(135deg, #8b4513, #a0522d);
-  border: 1px solid #cd853f;
+  background: #2563eb;
 }
 
 .toast-success {
-  background: linear-gradient(135deg, #2d6a4f, #40916c);
-  border: 1px solid #52b788;
+  background: #16a34a;
   animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
 }
 
 .toast-error {
-  background: linear-gradient(135deg, #9b2226, #ae2012);
-  border: 1px solid #d62828;
+  background: #dc2626;
   animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
 }
 
@@ -354,13 +348,12 @@ footer {
 }
 
 .toast-confirm {
-  background: #fdf6e3 !important;
-  color: #5c3317 !important;
-  border: none !important;
+  background: white !important;
+  color: #2563eb !important;
 }
 
 .toast-confirm:hover {
-  background: #f5e6c8 !important;
+  background: #f0f0f0 !important;
 }
 
 .toast-cancel {
@@ -398,7 +391,7 @@ footer {
 @media (max-width: 768px) {
   header {
     flex-direction: column;
-  gap: 50px;
+    gap: 15px;
     padding: 20px;
   }
 
@@ -442,6 +435,12 @@ footer {
 
   .books {
     grid-template-columns: 1fr;
+  }
+
+  .toast {
+    right: 10px;
+    left: 10px;
+    max-width: none;
   }
 }
 
